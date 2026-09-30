@@ -92,7 +92,14 @@ export const ReviewerQueueView: React.FC<ReviewerQueueViewProps> = ({
                 {/* Asset Thumbnail & Details */}
                 <div className="flex items-center gap-4">
                   <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 shadow-sm">
-                    <img src={item.asset.thumbnail_url} className="w-full h-full object-cover" />
+                    <img 
+                      src={item.asset.thumbnail_url} 
+                      alt={item.asset.id}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=300&q=80';
+                      }}
+                      className="w-full h-full object-cover" 
+                    />
                     <span className="absolute bottom-1 right-1 text-[9px] font-mono font-bold px-1 rounded bg-slate-900 text-white shadow">
                       {item.asset.score}
                     </span>

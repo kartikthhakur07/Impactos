@@ -30,7 +30,7 @@ import { CloudinaryMapModal } from './components/CloudinaryMapModal';
 import { ImpactCopilotDrawer } from './components/ImpactCopilotDrawer';
 
 // Icons for Top Header Bar
-import { Menu, Sparkles, Layers, ShieldCheck, User, Database, ArrowLeft } from 'lucide-react';
+import { Menu, Sparkles, Layers, ShieldCheck, User, Database, ArrowLeft, Bell } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export function App() {
@@ -166,15 +166,7 @@ export function App() {
               <Menu className="w-5 h-5" />
             </button>
 
-            {/* Back to Landing Page Button */}
-            <button
-              onClick={() => setActiveTab('landing')}
-              className="p-1.5 rounded-lg bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors hidden sm:flex items-center gap-1 text-xs font-semibold"
-              title="Return to Landing Page"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
-              <span>Landing Page</span>
-            </button>
+
 
             <div>
               <h1 className="text-base font-extrabold text-slate-900 font-outfit">
@@ -189,38 +181,25 @@ export function App() {
           {/* Quick Header Right Actions */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => {
-                handleSeedDemoData();
-                setActiveTab('dashboard');
-              }}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-300 transition-colors"
-            >
-              <Database className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Seed Demo Data</span>
-            </button>
-
-            <button
               onClick={() => setIsCloudinaryMapOpen(true)}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-colors"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold border border-slate-200 transition-colors shadow-xs"
             >
               <Layers className="w-3.5 h-3.5 text-cyan-600" />
-              <span>Cloudinary Map</span>
+              <span>Cloudinary Architecture</span>
             </button>
 
             <button
-              onClick={() => setIsCopilotOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs shadow-md shadow-emerald-600/20 transition-all"
+              onClick={() => setActiveTab('review')}
+              className="relative p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+              title="Risk Review Queue Notifications"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-white text-white" />
-              <span>Copilot AI</span>
+              <Bell className="w-4 h-4 text-slate-700" />
+              {pendingReviewCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-black text-white shadow-xs">
+                  {pendingReviewCount}
+                </span>
+              )}
             </button>
-
-            {/* User Profile Avatar */}
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-              <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-700 font-bold text-xs">
-                <User className="w-4 h-4 text-slate-600" />
-              </div>
-            </div>
           </div>
         </header>
 
@@ -326,21 +305,7 @@ export function App() {
           )}
         </main>
 
-        {/* Footer */}
-        <footer className="border-t border-slate-200 bg-white py-4 px-4 lg:px-8 text-center text-xs text-slate-500">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="font-medium">
-              IMPACTOS v2.0 • Problem Statement 02 | Cloudinary Hackathon
-            </p>
-            <div className="flex items-center gap-4 text-[11px] text-slate-600 font-medium">
-              <button onClick={() => setIsCloudinaryMapOpen(true)} className="hover:text-emerald-700">Cloudinary Architecture</button>
-              <span>•</span>
-              <button onClick={() => setActiveTab('challenge')} className="hover:text-emerald-700">Anti-Spoofing Challenge</button>
-              <span>•</span>
-              <button onClick={() => setActiveTab('public')} className="hover:text-emerald-700">Privacy Shield</button>
-            </div>
-          </div>
-        </footer>
+
 
       </div>
 
@@ -358,6 +323,16 @@ export function App() {
           onClose={() => setIsCloudinaryMapOpen(false)}
         />
       )}
+
+      {/* Floating Copilot AI Trigger Button (Bottom-Right) */}
+      <button
+        onClick={() => setIsCopilotOpen(true)}
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-5 py-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs shadow-xl shadow-slate-900/25 border border-slate-700 transition-all transform hover:scale-105 active:scale-95 group"
+        title="Open Impact Copilot AI Assistant"
+      >
+        <Sparkles className="w-4 h-4 fill-emerald-400 text-emerald-400 group-hover:rotate-12 transition-transform" />
+        <span>Impact Copilot AI</span>
+      </button>
 
       <ImpactCopilotDrawer
         isOpen={isCopilotOpen}

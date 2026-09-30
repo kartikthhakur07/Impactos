@@ -67,10 +67,13 @@ export const AssetDetailModal: React.FC<AssetDetailModalProps> = ({
           
           {/* Left Column: Image Preview & Cloudinary Privacy Controls */}
           <div className="space-y-4">
-            <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 group">
+            <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 group flex items-center justify-center">
               <img
                 src={privacyBlurred ? `${asset.url}&blur=100` : asset.url}
                 alt={asset.id}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80';
+                }}
                 className={`w-full h-full object-cover transition-all duration-300 ${
                   privacyBlurred ? 'blur-md' : ''
                 }`}

@@ -173,63 +173,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ))}
         </div>
 
-        {/* Bottom Sidebar Footer & Action Triggers */}
-        <div className="p-4 border-t border-slate-100 space-y-2 bg-slate-50/50">
-          
-          {/* Seed Demo Data Button */}
-          <button
-            onClick={() => {
-              onSeedDemoData();
-              setActiveTab('dashboard');
-              setMobileOpen(false);
-            }}
-            className="w-full flex items-center justify-between p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-extrabold transition-colors"
-          >
-            <div className="flex items-center gap-2">
-              <Database className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Seed / Reset Demo Data</span>
-            </div>
-            <RefreshCw className="w-3 h-3 text-emerald-600" />
-          </button>
 
-          {/* Impact Copilot AI Button */}
-          <button
-            onClick={() => {
-              onOpenCopilot();
-              setMobileOpen(false);
-            }}
-            className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition-all transform hover:-translate-y-0.5"
-          >
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 fill-white text-white" />
-              <span>Impact Copilot AI</span>
-            </div>
-            <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping"></span>
-          </button>
-
-          {/* Cloudinary Architecture Button */}
-          <button
-            onClick={() => {
-              onOpenCloudinaryMap();
-              setMobileOpen(false);
-            }}
-            className="w-full flex items-center justify-between p-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold transition-colors"
-          >
-            <div className="flex items-center gap-2">
-              <Layers className="w-3.5 h-3.5 text-cyan-600" />
-              <span>Cloudinary Architecture</span>
-            </div>
-            <ChevronRight className="w-3 h-3 text-slate-400" />
-          </button>
-
-          <div className="pt-2 text-[10px] text-slate-400 flex items-center justify-between font-mono">
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              Verification Engine Active
-            </span>
-            <span>Cloudinary v2</span>
-          </div>
-        </div>
 
       </aside>
     </>

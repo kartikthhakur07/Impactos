@@ -145,6 +145,9 @@ export const MediaExplorerView: React.FC<MediaExplorerViewProps> = ({
               <img
                 src={asset.thumbnail_url}
                 alt={asset.id}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=300&q=80';
+                }}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
 

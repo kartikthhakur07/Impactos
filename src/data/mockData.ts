@@ -8,8 +8,8 @@ export const MOCK_PROJECTS: Project[] = [
     type: 'Tree Plantation & Land Restoration',
     start_date: '2026-01-10',
     end_date: '2026-09-30',
-    total_assets: 19,
-    verified_count: 15,
+    total_assets: 24,
+    verified_count: 20,
     flagged_count: 4,
     evidence_coverage: 92,
     sites: [
@@ -20,10 +20,10 @@ export const MOCK_PROJECTS: Project[] = [
         lat: 10.7867,
         lng: 79.1378,
         radius_m: 500,
-        asset_count: 15,
+        asset_count: 18,
         before_asset_id: 'asset-a1',
         after_asset_id: 'asset-a15',
-        change_summary: 'Significant canopy expansion (750+ thriving native saplings). Drip lines installed and visible soil moisture improvement over 4 months.',
+        change_summary: 'Significant canopy expansion (+35% foliage density, 750+ thriving native saplings). Drip lines installed with measurable soil moisture recovery.',
         comparability: 'high'
       },
       {
@@ -33,8 +33,8 @@ export const MOCK_PROJECTS: Project[] = [
         lat: 10.7920,
         lng: 79.1410,
         radius_m: 450,
-        asset_count: 4,
-        change_summary: 'Early ground preparation and soil tilling complete.',
+        asset_count: 6,
+        change_summary: 'Early ground preparation and soil tilling complete. Sapling holes mapped.',
         comparability: 'medium'
       }
     ]
@@ -46,10 +46,10 @@ export const MOCK_PROJECTS: Project[] = [
     type: 'Borewell & Water Point Repair',
     start_date: '2026-03-01',
     end_date: '2026-09-25',
-    total_assets: 17,
-    verified_count: 11,
-    flagged_count: 6,
-    evidence_coverage: 65,
+    total_assets: 18,
+    verified_count: 14,
+    flagged_count: 4,
+    evidence_coverage: 78,
     sites: [
       {
         id: 'site-b',
@@ -58,10 +58,102 @@ export const MOCK_PROJECTS: Project[] = [
         lat: 14.6819,
         lng: 77.6006,
         radius_m: 300,
-        asset_count: 15,
+        asset_count: 12,
         before_asset_id: 'asset-b1',
         after_asset_id: 'asset-b10',
         change_summary: 'Handpump replaced with solar pump enclosure; concrete aprons restored.',
+        comparability: 'high'
+      },
+      {
+        id: 'site-b2',
+        project_id: 'proj-2',
+        name: 'Site B2 - Kadapa Village Pump Unit',
+        lat: 14.4673,
+        lng: 78.8242,
+        radius_m: 350,
+        asset_count: 6,
+        change_summary: 'Water filtration skid installed; baseline bacterial testing passed.',
+        comparability: 'medium'
+      }
+    ]
+  },
+  {
+    id: 'proj-3',
+    name: 'Sundarbans Tidal Mangrove Shield',
+    org_name: 'Bengal Coastal Alliance',
+    type: 'Mangrove Seedling Beds & Coastal Defense',
+    start_date: '2026-02-15',
+    end_date: '2026-11-30',
+    total_assets: 16,
+    verified_count: 14,
+    flagged_count: 2,
+    evidence_coverage: 88,
+    sites: [
+      {
+        id: 'site-c',
+        project_id: 'proj-3',
+        name: 'Site C - Gosaba Estuary Mudflats',
+        lat: 22.1652,
+        lng: 88.8071,
+        radius_m: 600,
+        asset_count: 16,
+        before_asset_id: 'asset-c1',
+        after_asset_id: 'asset-c5',
+        change_summary: 'Avicennia marina seedlings rooted across 12 mudflat acres. Wave attenuation barriers installed.',
+        comparability: 'high'
+      }
+    ]
+  },
+  {
+    id: 'proj-4',
+    name: 'SuryaShakti Solar Microgrid Access',
+    org_name: 'Thar Clean Power Org',
+    type: 'Off-Grid Rural Electrification',
+    start_date: '2026-04-01',
+    end_date: '2026-10-15',
+    total_assets: 14,
+    verified_count: 12,
+    flagged_count: 2,
+    evidence_coverage: 85,
+    sites: [
+      {
+        id: 'site-d',
+        project_id: 'proj-4',
+        name: 'Site D - Jaisalmer Village Grid Alpha',
+        lat: 26.9157,
+        lng: 70.9083,
+        radius_m: 400,
+        asset_count: 14,
+        before_asset_id: 'asset-d1',
+        after_asset_id: 'asset-d4',
+        change_summary: '50kWp rooftop solar array and lithium storage connected to 80 household meters.',
+        comparability: 'high'
+      }
+    ]
+  },
+  {
+    id: 'proj-5',
+    name: 'CleanOcean Marine Plastic Recovery',
+    org_name: 'BlueSeas Conservation',
+    type: 'River Mouth Plastic Net Traps',
+    start_date: '2026-05-10',
+    end_date: '2026-12-01',
+    total_assets: 12,
+    verified_count: 10,
+    flagged_count: 2,
+    evidence_coverage: 83,
+    sites: [
+      {
+        id: 'site-e',
+        project_id: 'proj-5',
+        name: 'Site E - Gokarna Estuary Trash Barrier',
+        lat: 14.5479,
+        lng: 74.3188,
+        radius_m: 350,
+        asset_count: 12,
+        before_asset_id: 'asset-e1',
+        after_asset_id: 'asset-e3',
+        change_summary: 'Interception net captured 4.2 metric tons of macro-plastic over 90 days.',
         comparability: 'medium'
       }
     ]
@@ -69,7 +161,7 @@ export const MOCK_PROJECTS: Project[] = [
 ];
 
 export const MOCK_ASSETS: Asset[] = [
-  // --- PROJECT 1 / SITE A (Good series) ---
+  // --- PROJECT 1: GREENSHIELD REFORESTATION ---
   {
     id: 'asset-a1',
     site_id: 'site-a',
@@ -95,11 +187,7 @@ export const MOCK_ASSETS: Asset[] = [
     ai_json: {
       activity: 'land_preparation',
       condition: 'before',
-      scene: {
-        terrain: 'arid_farmland',
-        season_cues: 'dry_winter',
-        weather_cues: 'clear_sky'
-      },
+      scene: { terrain: 'arid_farmland', season_cues: 'dry_winter', weather_cues: 'clear_sky' },
       objects: ['barren_soil', 'wooden_stakes', 'measuring_tape'],
       counts: { sapling_holes: { min: 45, max: 60 } },
       quality_flags: [],
@@ -119,9 +207,7 @@ export const MOCK_ASSETS: Asset[] = [
       { signal: 'Location', description: 'GPS 0.12km within site radius (500m)', points: 20, passed: true },
       { signal: 'Time', description: 'EXIF timestamp within project window; 42 min server gap', points: 15, passed: true },
       { signal: 'Uniqueness', description: 'No duplicate image found in library', points: 15, passed: true },
-      { signal: 'Visual Match', description: 'Vision model confirms land preparation activity', points: 15, passed: true },
-      { signal: 'Metadata Integrity', description: 'Camera maker iPhone 14 Pro, no editing software trace', points: 10, passed: true },
-      { signal: 'Series Consistency', description: 'Plausible sequential order in Site A timeline', points: 15, passed: true }
+      { signal: 'Visual Match', description: 'Vision model confirms land preparation activity', points: 15, passed: true }
     ]
   },
   {
@@ -169,8 +255,7 @@ export const MOCK_ASSETS: Asset[] = [
       { signal: 'Location & Nonce', description: 'Live Web Geolocation + server nonce signature verified', points: 20, passed: true },
       { signal: 'Time', description: 'Real-time capture (5 sec upload latency)', points: 15, passed: true },
       { signal: 'Uniqueness', description: 'Perceptual hash unique', points: 15, passed: true },
-      { signal: 'Visual Match', description: 'Vision model confirms tree planting activity', points: 15, passed: true },
-      { signal: 'Metadata Integrity', description: 'Signed tamper-proof payload', points: 10, passed: true }
+      { signal: 'Visual Match', description: 'Vision model confirms tree planting activity', points: 15, passed: true }
     ]
   },
   {
@@ -217,12 +302,11 @@ export const MOCK_ASSETS: Asset[] = [
     score_reasons: [
       { signal: 'Location', description: 'GPS 0.08km inside site radius', points: 20, passed: true },
       { signal: 'Time', description: '8 months after baseline photo', points: 15, passed: true },
-      { signal: 'Visual Match', description: 'Vision model detects healthy tree canopy growth', points: 15, passed: true },
-      { signal: 'Series Consistency', description: 'Matches landmark tree ridge in background of asset-a1', points: 15, passed: true }
+      { signal: 'Visual Match', description: 'Vision model detects healthy tree canopy growth', points: 15, passed: true }
     ]
   },
 
-  // --- PROJECT 2 / SITE B (Water Point) ---
+  // --- PROJECT 2: JALSHAKTI WATER INITIATIVE ---
   {
     id: 'asset-b1',
     site_id: 'site-b',
@@ -317,9 +401,198 @@ export const MOCK_ASSETS: Asset[] = [
     ]
   },
 
-  // --- PLANTED ANOMALIES (DEMO EXAMPLES FROM KT DOC) ---
+  // --- PROJECT 3: SUNDARBANS MANGROVE SHIELD ---
+  {
+    id: 'asset-c1',
+    site_id: 'site-c',
+    site_name: 'Site C - Gosaba Estuary Mudflats',
+    project_id: 'proj-3',
+    project_name: 'Sundarbans Tidal Mangrove Shield',
+    cloudinary_public_id: 'impactos/mangrove_before_001',
+    url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=300&q=80',
+    sha256: '9c11e45fceea167a5a36dedd4bea2888',
+    phash: 'p6029384756abcdef',
+    exif: {
+      lat: 22.1654,
+      lng: 88.8073,
+      date: '2026-02-18 07:45:00',
+      camera: 'Pixel 8',
+      software: 'Android 14',
+      hasGps: true,
+      hasTimestamp: true
+    },
+    server_upload_time: '2026-02-18 08:30:00',
+    captured_at: '2026-02-18 07:45:00',
+    ai_json: {
+      activity: 'mangrove_bed_prep',
+      condition: 'before',
+      scene: { terrain: 'tidal_mudflat', season_cues: 'low_tide', weather_cues: 'misty' },
+      objects: ['bamboo_stakes', 'mudflat', 'seedling_trays'],
+      counts: { trays: { min: 25, max: 30 } },
+      quality_flags: [],
+      synthetic_risk: { level: 'low', cues: [], confidence: 0.98 },
+      location_cues: ['estuary_channel'],
+      confidence: 0.95
+    },
+    tags: ['mangrove', 'mudflat', 'before', 'site_c'],
+    score: 80,
+    raw_score: 93,
+    tier: 'T1+',
+    tier_name: 'T1+ Trusted Web Capture',
+    synthetic_risk_level: 'low',
+    status: 'verified',
+    capture_method: 'trusted_web',
+    score_reasons: [
+      { signal: 'Location & Nonce', description: 'Server nonce verified; GPS 0.05km inside site', points: 20, passed: true },
+      { signal: 'Time', description: 'Live web capture payload', points: 15, passed: true },
+      { signal: 'Visual Match', description: 'Vision LLM confirms tidal mudflat mangrove preparation', points: 15, passed: true }
+    ]
+  },
+  {
+    id: 'asset-c5',
+    site_id: 'site-c',
+    site_name: 'Site C - Gosaba Estuary Mudflats',
+    project_id: 'proj-3',
+    project_name: 'Sundarbans Tidal Mangrove Shield',
+    cloudinary_public_id: 'impactos/mangrove_after_005',
+    url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80',
+    sha256: '8b22e45fceea167a5a36dedd4bea2777',
+    phash: 'p7029384756abcdef',
+    exif: {
+      lat: 22.1651,
+      lng: 88.8070,
+      date: '2026-08-30 15:20:00',
+      camera: 'Pixel 8',
+      software: 'Android 14',
+      hasGps: true,
+      hasTimestamp: true
+    },
+    server_upload_time: '2026-08-30 16:10:00',
+    captured_at: '2026-08-30 15:20:00',
+    ai_json: {
+      activity: 'rooted_mangroves',
+      condition: 'after',
+      scene: { terrain: 'coastal_forest', season_cues: 'post_monsoon', weather_cues: 'clear' },
+      objects: ['rooted_avicennia_trees', 'storm_barrier'],
+      counts: { saplings: { min: 1200, max: 1500 } },
+      quality_flags: [],
+      synthetic_risk: { level: 'low', cues: [], confidence: 0.99 },
+      location_cues: ['estuary_channel'],
+      confidence: 0.97
+    },
+    tags: ['mangrove', 'after', 'coastal_barrier'],
+    score: 80,
+    raw_score: 96,
+    tier: 'T1+',
+    tier_name: 'T1+ Trusted Web Capture',
+    synthetic_risk_level: 'low',
+    status: 'verified',
+    capture_method: 'trusted_web',
+    score_reasons: [
+      { signal: 'Location & Nonce', description: 'Cryptographic token verified', points: 20, passed: true },
+      { signal: 'Visual Match', description: 'Vision model confirms dense rooted mangrove seedling growth', points: 15, passed: true }
+    ]
+  },
 
-  // 1. Planted Duplicate (Reuse Detection)
+  // --- PROJECT 4: SURYASHAKTI SOLAR MICROGRID ---
+  {
+    id: 'asset-d1',
+    site_id: 'site-d',
+    site_name: 'Site D - Jaisalmer Village Grid Alpha',
+    project_id: 'proj-4',
+    project_name: 'SuryaShakti Solar Microgrid Access',
+    cloudinary_public_id: 'impactos/solar_installed_001',
+    url: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1000&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=300&q=80',
+    sha256: '7a11e45fceea167a5a36dedd4bea2666',
+    phash: 'p8029384756abcdef',
+    exif: {
+      lat: 26.9158,
+      lng: 70.9085,
+      date: '2026-04-10 12:00:00',
+      camera: 'Sony A7 IV',
+      software: 'Adobe Lightroom 13.0',
+      hasGps: true,
+      hasTimestamp: true
+    },
+    server_upload_time: '2026-04-10 14:30:00',
+    captured_at: '2026-04-10 12:00:00',
+    ai_json: {
+      activity: 'solar_installation',
+      condition: 'after',
+      scene: { terrain: 'desert_village_roof', season_cues: 'summer', weather_cues: 'intense_sun' },
+      objects: ['photovoltaic_panels', 'inverter_box', 'battery_bank'],
+      counts: { panels: { min: 24, max: 24 } },
+      quality_flags: [],
+      synthetic_risk: { level: 'low', cues: [], confidence: 0.98 },
+      location_cues: ['thar_desert_backdrop'],
+      confidence: 0.96
+    },
+    tags: ['solar', 'microgrid', 'after', 'site_d'],
+    score: 75,
+    raw_score: 91,
+    tier: 'T1',
+    tier_name: 'T1 Cross-checked',
+    synthetic_risk_level: 'low',
+    status: 'verified',
+    capture_method: 'self_reported',
+    score_reasons: [
+      { signal: 'Location', description: 'GPS match inside Jaisalmer Site D', points: 20, passed: true },
+      { signal: 'Visual Match', description: '24 PV solar panels + inverter bank verified', points: 15, passed: true }
+    ]
+  },
+
+  // --- PROJECT 5: CLEANOCEAN PLASTIC RECOVERY ---
+  {
+    id: 'asset-e1',
+    site_id: 'site-e',
+    site_name: 'Site E - Gokarna Estuary Trash Barrier',
+    project_id: 'proj-5',
+    project_name: 'CleanOcean Marine Plastic Recovery',
+    cloudinary_public_id: 'impactos/ocean_plastic_001',
+    url: 'https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=1000&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=300&q=80',
+    sha256: '6b22e45fceea167a5a36dedd4bea2555',
+    phash: 'p9029384756abcdef',
+    exif: {
+      lat: 14.5480,
+      lng: 74.3189,
+      date: '2026-05-15 09:30:00',
+      camera: 'iPhone 15 Pro',
+      software: 'iOS 17.5',
+      hasGps: true,
+      hasTimestamp: true
+    },
+    server_upload_time: '2026-05-15 10:15:00',
+    captured_at: '2026-05-15 09:30:00',
+    ai_json: {
+      activity: 'plastic_interception',
+      condition: 'during',
+      scene: { terrain: 'estuary_river_mouth', season_cues: 'pre_monsoon', weather_cues: 'breezy' },
+      objects: ['trash_net_barrier', 'plastic_bottles', 'sorting_bins'],
+      counts: { bags_collected: { min: 80, max: 100 } },
+      quality_flags: [],
+      synthetic_risk: { level: 'low', cues: [], confidence: 0.99 },
+      location_cues: ['gokarna_coastal_ridge'],
+      confidence: 0.94
+    },
+    tags: ['ocean_plastic', 'estuary_barrier', 'site_e'],
+    score: 80,
+    raw_score: 94,
+    tier: 'T1+',
+    tier_name: 'T1+ Trusted Web Capture',
+    synthetic_risk_level: 'low',
+    status: 'verified',
+    capture_method: 'trusted_web',
+    score_reasons: [
+      { signal: 'Location & Nonce', description: 'Server nonce verified on estuary coastline', points: 20, passed: true },
+      { signal: 'Visual Match', description: 'Macro-plastic interception net barrier confirmed', points: 15, passed: true }
+    ]
+  },
+
+  // --- PLANTED ANOMALIES & RISK FEED ASSETS ---
   {
     id: 'asset-dup-1',
     site_id: 'site-b',
@@ -329,7 +602,7 @@ export const MOCK_ASSETS: Asset[] = [
     cloudinary_public_id: 'impactos/duplicate_water_pump',
     url: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1000&q=80',
     thumbnail_url: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=300&q=80',
-    sha256: '5b11e45fceea167a5a36dedd4bea2444', // SAME SHA256 / PHASH AS ASSET-B1!
+    sha256: '5b11e45fceea167a5a36dedd4bea2444',
     phash: 'p4029384756abcdef',
     exif: {
       lat: 14.6819,
@@ -365,12 +638,9 @@ export const MOCK_ASSETS: Asset[] = [
     capture_method: 'self_reported',
     score_reasons: [
       { signal: 'Uniqueness', description: 'REUSE FLAG: Perceptual hash matches asset-b1 uploaded 5 months ago', points: 0, passed: false },
-      { signal: 'Location', description: 'GPS inside site', points: 20, passed: true },
-      { signal: 'Time', description: 'Time conflict: identical photo uploaded with different timestamp', points: 0, passed: false }
+      { signal: 'Location', description: 'GPS inside site', points: 20, passed: true }
     ]
   },
-
-  // 2. Planted Wrong Location (GPS Mismatch)
   {
     id: 'asset-wrong-loc',
     site_id: 'site-a',
@@ -383,7 +653,7 @@ export const MOCK_ASSETS: Asset[] = [
     sha256: '3c88e45fceea167a5a36dedd4bea2888',
     phash: 'p9999384756abcdef',
     exif: {
-      lat: 12.9716, // Bangalore lat (300 km away!)
+      lat: 12.9716,
       lng: 77.5946,
       date: '2026-06-15 11:00:00',
       camera: 'OnePlus 9',
@@ -414,12 +684,9 @@ export const MOCK_ASSETS: Asset[] = [
     location_mismatch: true,
     capture_method: 'self_reported',
     score_reasons: [
-      { signal: 'Location', description: 'GPS mismatch: Photo taken 310 km outside registered Site A radius (500m)', points: 0, passed: false },
-      { signal: 'Scene Plausibility', description: 'Scene mismatch: Pine forest mountain terrain does not match Cauvery delta flatland', points: 0, passed: false }
+      { signal: 'Location', description: 'GPS mismatch: Photo taken 310 km outside registered Site A radius (500m)', points: 0, passed: false }
     ]
   },
-
-  // 3. Planted Metadata-Stripped (WhatsApp Upload T0 Cap)
   {
     id: 'asset-no-exif',
     site_id: 'site-a',
@@ -436,7 +703,7 @@ export const MOCK_ASSETS: Asset[] = [
       hasTimestamp: false
     },
     server_upload_time: '2026-07-20 16:00:00',
-    captured_at: '2026-07-20 16:00:00', // server time used as fallback
+    captured_at: '2026-07-20 16:00:00',
     ai_json: {
       activity: 'tree_planting',
       condition: 'during',
@@ -457,12 +724,10 @@ export const MOCK_ASSETS: Asset[] = [
     status: 'flagged',
     capture_method: 'self_reported',
     score_reasons: [
-      { signal: 'Metadata Integrity', description: 'EXIF GPS & Timestamp missing (likely stripped by WhatsApp)', points: 0, passed: false },
+      { signal: 'Metadata Integrity', description: 'EXIF GPS & Timestamp missing (stripped by messenger)', points: 0, passed: false },
       { signal: 'Tier Cap', description: 'Self-reported without EXIF metadata is strictly capped at T0 max score 55/100', points: 0, passed: false }
     ]
   },
-
-  // 4. Planted AI-Generated Image (Synthetic Image Risk -40)
   {
     id: 'asset-ai-gen',
     site_id: 'site-a',
@@ -491,10 +756,10 @@ export const MOCK_ASSETS: Asset[] = [
       scene: { terrain: 'hyper_surreal_forest', season_cues: 'perfect_lighting', weather_cues: 'golden_glow' },
       objects: ['trees', 'exotic_foliage'],
       counts: {},
-      quality_flags: ['ai_generated_artifacts', 'surreal_lighting', 'missing_camera_maker_notes'],
+      quality_flags: ['ai_generated_artifacts', 'surreal_lighting'],
       synthetic_risk: {
         level: 'high',
-        cues: ['Unnatural light reflections', 'Midjourney metadata artifact', 'Overly smooth bark textures'],
+        cues: ['Unnatural light reflections', 'Midjourney metadata artifact'],
         confidence: 0.94
       },
       location_cues: [],
@@ -502,15 +767,14 @@ export const MOCK_ASSETS: Asset[] = [
     },
     tags: ['flagged', 'synthetic_risk_high', 'ai_generated'],
     score: 25,
-    raw_score: 65, // Raw 65 - 40 penalty = 25
+    raw_score: 65,
     tier: 'T0',
     tier_name: 'T0 Self-reported (Penalty Applied)',
     synthetic_risk_level: 'high',
     status: 'flagged',
     capture_method: 'self_reported',
     score_reasons: [
-      { signal: 'Synthetic Risk Penalty', description: 'HIGH SYNTHETIC RISK DETECTED: -40 penalty applied. Flagged for human review.', points: -40, passed: false },
-      { signal: 'Metadata Integrity', description: 'Software header contains generator traces (Midjourney v6)', points: 0, passed: false }
+      { signal: 'Synthetic Risk Penalty', description: 'HIGH SYNTHETIC RISK DETECTED: -40 penalty applied. Flagged for human review.', points: -40, passed: false }
     ]
   }
 ];
@@ -524,13 +788,13 @@ export const MOCK_CLAIMS: Claim[] = [
     period: 'Jan 2026 - Aug 2026',
     grade: 'Strong',
     supporting_asset_ids: ['asset-a1', 'asset-a2', 'asset-a15'],
-    judge_verdict: 'STRONG EVIDENCE: 15 verified assets across 4 months confirm soil preparation, volunteer planting, and dense canopy growth at Site A. Highest assurance tier: T1+.',
+    judge_verdict: 'STRONG EVIDENCE: 18 verified assets across 8 months confirm soil preparation, volunteer planting, and dense canopy growth at Site A. Highest assurance tier: T1+.',
     prosecutor_notes: [
       'Asset asset-wrong-loc was submitted for Site A but rejected due to 310km GPS drift.',
       'Asset asset-ai-gen was flagged for High Synthetic Risk.'
     ],
     defender_notes: [
-      'Site A features 15 consistent assets spanning 8 months.',
+      'Site A features 18 consistent assets spanning 8 months.',
       'Asset asset-a2 was captured live via T1+ Trusted Web Capture with server nonce.',
       'Before/After slider clearly proves canopy density change from barren soil to 750+ trees.'
     ]
@@ -546,30 +810,24 @@ export const MOCK_CLAIMS: Claim[] = [
     missing_evidence: 'Missing continuous intermediate maintenance logs; asset-dup-1 was flagged as a duplicate photo.',
     judge_verdict: 'WEAK EVIDENCE: Before photo (asset-b1) and After photo (asset-b10) confirm hardware installation, but intermediate milestone proof is missing and duplicate upload was detected.',
     prosecutor_notes: [
-      'A duplicate photo (asset-dup-1) was submitted attempting to claim a secondary site.',
-      'No T1+ or higher trusted capture method was used.'
+      'A duplicate photo (asset-dup-1) was submitted attempting to claim a secondary site.'
     ],
     defender_notes: [
-      'Assets asset-b1 and asset-b10 have valid EXIF GPS within Site B radius.',
-      'Vision LLM confirms clear transition from rusty broken handpump to active solar water pump.'
+      'Assets asset-b1 and asset-b10 have valid EXIF GPS within Site B radius.'
     ]
   },
   {
     id: 'claim-3',
-    project_id: 'proj-1',
-    text: 'Sequestrated 250 Metric Tons of CO2 within the first 90 days of sapling planting.',
-    type: 'Carbon Sequestration Claim',
-    period: 'Jan 2026 - Apr 2026',
-    grade: 'Unsupported',
-    supporting_asset_ids: [],
-    missing_evidence: 'Photos cannot prove exact quantitative carbon sequestration tonnage without third-party soil biomass sampling (T3 tier).',
-    judge_verdict: 'UNSUPPORTED: Ground field media can verify sapling count and foliage health, but quantitative carbon sequestration claims require external T3 sensor/satellite audit data.',
-    prosecutor_notes: [
-      'No soil biomass measurements or satellite NDVI series attached to support 250 MT CO2 figure.',
-      'KT Rule 21: Photos cannot establish precise carbon tonnage.'
-    ],
+    project_id: 'proj-3',
+    text: 'Planted 1,500 tidal mangrove seedlings forming a 12-acre coastal storm surge shield in Gosaba estuary.',
+    type: 'Coastal Ecosystem Shield',
+    period: 'Feb 2026 - Aug 2026',
+    grade: 'Strong',
+    supporting_asset_ids: ['asset-c1', 'asset-c5'],
+    judge_verdict: 'STRONG EVIDENCE: Trusted Web Capture (T1+) with server nonces verifies mudflat seedling bed preparation and rooted mangrove growth.',
+    prosecutor_notes: [],
     defender_notes: [
-      'Tree counts across assets confirm healthy sapling density.'
+      'Photos captured via tamper-proof web capture link (/capture/:token) with server nonce verification.'
     ]
   }
 ];
@@ -582,9 +840,9 @@ export const MOCK_GREENWASHING_REPORT: ReportCard = {
   overall_grade: 'C',
   metrics: {
     specificity: 62,
-    evidence_coverage: 38,
+    evidence_coverage: 48,
     evidence_trust: 'T1 Cross-checked',
-    consistency: 75
+    consistency: 78
   },
   extracted_claims: [
     {
@@ -657,29 +915,6 @@ export const MOCK_GREENWASHING_REPORT: ReportCard = {
       grade: 'Supported',
       linked_asset_ids: ['asset-b1', 'asset-b10'],
       assurance_tier: 'T1'
-    },
-    {
-      id: 'e-claim-4',
-      page: 18,
-      text: 'Eliminated 50,000 Metric Tons of net carbon emissions through proprietary forest offsets.',
-      what: 'Carbon offsets',
-      quantity: '50,000 MT',
-      unit: 'MT CO2',
-      place: 'Unspecified',
-      period: '2025-2026',
-      baseline: '2024 emissions',
-      verification_mentioned: false,
-      vague_terms: ['net zero', 'proprietary offsets'],
-      quality_checks: {
-        concrete_action: true,
-        quantity_present: true,
-        site_stated: false,
-        period_stated: true,
-        baseline_stated: true,
-        third_party_assurance: false
-      },
-      grade: 'Unverifiable',
-      linked_asset_ids: []
     }
   ]
 };
@@ -754,18 +989,6 @@ export const CLOUDINARY_FEATURE_MAP = [
     need: 'Face Privacy Shield',
     capability: 'Face Detection + Pixelate/Blur Transformations',
     notes: 'Generates on-the-fly privacy derivative (`e_blur_faces:1000` or `e_pixelate_faces`).',
-    status: 'Active in IMPACTOS'
-  },
-  {
-    need: 'Campaign Social Carousel',
-    capability: 'Smart Crop & Aspect Ratio Transformations',
-    notes: 'Auto gravity cropping (`c_fill,g_auto,w_1080,h_1080`) for multi-platform social cards.',
-    status: 'Active in IMPACTOS'
-  },
-  {
-    need: 'Video Timelapse Summaries',
-    capability: 'Video Slideshow Generation from Images',
-    notes: 'Stitches chronologically sorted site photos into high-impact MP4 time-lapse stories.',
     status: 'Active in IMPACTOS'
   }
 ];

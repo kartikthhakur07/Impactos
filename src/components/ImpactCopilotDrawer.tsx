@@ -103,156 +103,178 @@ export const ImpactCopilotDrawer: React.FC<ImpactCopilotDrawerProps> = ({
   };
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white border-l border-slate-200 shadow-2xl flex flex-col">
+    /* Full-Screen Backdrop Overlay with Blur Effect */
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-end p-4 md:p-6 bg-slate-900/40 backdrop-blur-md transition-all duration-300"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       
-      {/* Header */}
-      <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 p-0.5 flex items-center justify-center shadow-sm">
-            <Sparkles className="w-4 h-4 text-white fill-white" />
+      {/* Floating Glass Copilot Window */}
+      <div 
+        className="relative w-full max-w-md h-[620px] max-h-[85vh] bg-white/95 backdrop-blur-2xl border border-slate-200/90 shadow-2xl rounded-3xl overflow-hidden flex flex-col font-sans border-emerald-500/20 shadow-slate-950/20 transform transition-all duration-300 animate-in fade-in zoom-in-95"
+        onClick={(e) => e.stopPropagation()}
+      >
+        
+        {/* Floating Window Header Bar */}
+        <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/90 backdrop-blur">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8.5 h-8.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 p-0.5 flex items-center justify-center shadow-md">
+              <Sparkles className="w-4.5 h-4.5 text-white fill-white" />
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900 font-outfit">Impact Copilot AI</h3>
+              <p className="text-[10px] text-emerald-700 font-mono font-bold">Trained on IMPACTOS Evidence Graph</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-sm font-extrabold text-slate-900 font-outfit">Impact Copilot AI</h3>
-            <p className="text-[10px] text-emerald-700 font-mono font-bold">Trained on IMPACTOS Evidence Graph</p>
-          </div>
+
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-colors"
+            title="Close Assistant"
+          >
+            <X className="w-4.5 h-4.5" />
+          </button>
         </div>
 
-        <button
-          onClick={onClose}
-          className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Preset Quick Question Suggestions */}
-      <div className="p-3 bg-slate-50 border-b border-slate-200 flex gap-1.5 overflow-x-auto no-scrollbar">
-        <button
-          onClick={() => handleSend("Is Project A audit-ready?")}
-          className="text-[10px] font-bold text-emerald-800 bg-emerald-100/70 hover:bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-300 whitespace-nowrap"
-        >
-          "Is Project A audit-ready?"
-        </button>
-        <button
-          onClick={() => handleSend("Show low-trust assets this month.")}
-          className="text-[10px] font-bold text-rose-800 bg-rose-100/70 hover:bg-rose-100 px-2.5 py-1 rounded-full border border-rose-300 whitespace-nowrap"
-        >
-          "Show low-trust assets"
-        </button>
-      </div>
-
-      {/* Messages Scroll View */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50/30">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex items-start gap-2.5 ${msg.sender === 'user' ? 'flex-row-reverse' : ''}`}
-          >
-            <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 shadow-sm ${
-              msg.sender === 'user' ? 'bg-emerald-600 text-white font-bold text-xs' : 'bg-slate-100 text-teal-700 border border-slate-200'
-            }`}>
-              {msg.sender === 'user' ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4" />}
-            </div>
-
-            <div className={`p-3.5 rounded-2xl max-w-[85%] space-y-2 text-xs leading-relaxed shadow-sm ${
-              msg.sender === 'user'
-                ? 'bg-emerald-600 text-white font-semibold rounded-tr-none'
-                : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none font-medium'
-            }`}>
-              <p>{msg.text}</p>
-
-              {/* Cited Assets Thumbnails Row */}
-              {msg.cited_asset_ids && msg.cited_asset_ids.length > 0 && (
-                <div className="pt-2 border-t border-slate-100 space-y-1.5">
-                  <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">
-                    Cited Evidence Assets:
-                  </span>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {msg.cited_asset_ids.map((id) => {
-                      const ast = assets.find(a => a.id === id);
-                      if (!ast) return null;
-                      return (
-                        <div
-                          key={id}
-                          onClick={() => {
-                            onSelectAsset(ast);
-                            onClose();
-                          }}
-                          className="flex items-center gap-2 p-1 rounded bg-slate-50 border border-slate-200 hover:border-emerald-400 cursor-pointer transition-all text-[10px]"
-                        >
-                          <img src={ast.thumbnail_url} className="w-7 h-7 rounded object-cover" />
-                          <div className="truncate">
-                            <span className="font-bold text-slate-900 block truncate">{ast.id}</span>
-                            <span className="text-emerald-700 font-bold font-mono">{ast.tier}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Shortcut Action Button */}
-              {msg.action_type === 'open_slider' && (
-                <button
-                  onClick={() => {
-                    onNavigate('slider');
-                    onClose();
-                  }}
-                  className="w-full mt-1 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-extrabold text-[11px] border border-emerald-300 flex items-center justify-center gap-1 shadow-sm"
-                >
-                  <span>Open Before/After Slider &rarr;</span>
-                </button>
-              )}
-
-              {msg.action_type === 'view_review' && (
-                <button
-                  onClick={() => {
-                    onNavigate('review');
-                    onClose();
-                  }}
-                  className="w-full mt-1 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-extrabold text-[11px] border border-rose-300 flex items-center justify-center gap-1 shadow-sm"
-                >
-                  <span>Inspect Review Queue &rarr;</span>
-                </button>
-              )}
-
-            </div>
-          </div>
-        ))}
-
-        {isThinking && (
-          <div className="flex items-center gap-2 text-xs text-slate-500 font-medium p-2">
-            <Sparkles className="w-4 h-4 text-emerald-600 animate-spin" />
-            <span>Copilot querying evidence graph...</span>
-          </div>
-        )}
-      </div>
-
-      {/* Input Box */}
-      <div className="p-3 border-t border-slate-200 bg-white">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSend();
-          }}
-          className="flex items-center gap-2"
-        >
-          <input
-            type="text"
-            value={inputQuery}
-            onChange={(e) => setInputQuery(e.target.value)}
-            placeholder="Ask a question about claims or evidence..."
-            className="flex-1 bg-slate-50 text-slate-900 placeholder-slate-400 px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 outline-none font-semibold"
-          />
+        {/* Preset Quick Suggestions Pills */}
+        <div className="p-3 bg-slate-50/80 border-b border-slate-200 flex gap-1.5 overflow-x-auto no-scrollbar">
           <button
-            type="submit"
-            disabled={!inputQuery.trim()}
-            className="p-2 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-colors disabled:opacity-50 shadow-sm"
+            onClick={() => handleSend("Is Project A audit-ready?")}
+            className="text-[10px] font-extrabold text-emerald-800 bg-emerald-100/80 hover:bg-emerald-200/80 px-3 py-1 rounded-full border border-emerald-300/80 whitespace-nowrap transition-colors"
           >
-            <Send className="w-4 h-4 text-white" />
+            "Is Project A audit-ready?"
           </button>
-        </form>
+          <button
+            onClick={() => handleSend("Show low-trust assets this month.")}
+            className="text-[10px] font-extrabold text-rose-800 bg-rose-100/80 hover:bg-rose-200/80 px-3 py-1 rounded-full border border-rose-300/80 whitespace-nowrap transition-colors"
+          >
+            "Show low-trust assets"
+          </button>
+        </div>
+
+        {/* Chat Message Stream */}
+        <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50/30">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex items-start gap-2.5 ${msg.sender === 'user' ? 'flex-row-reverse' : ''}`}
+            >
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 shadow-xs ${
+                msg.sender === 'user' ? 'bg-slate-950 text-white font-bold text-xs' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+              }`}>
+                {msg.sender === 'user' ? <User className="w-3.5 h-3.5 text-white" /> : <Bot className="w-3.5 h-3.5" />}
+              </div>
+
+              <div className={`p-3.5 rounded-2xl max-w-[85%] space-y-2 text-xs leading-relaxed shadow-xs ${
+                msg.sender === 'user'
+                  ? 'bg-slate-950 text-white font-semibold rounded-tr-none'
+                  : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none font-medium'
+              }`}>
+                <p>{msg.text}</p>
+
+                {/* Cited Asset Thumbnails Row */}
+                {msg.cited_asset_ids && msg.cited_asset_ids.length > 0 && (
+                  <div className="pt-2 border-t border-slate-100 space-y-1.5">
+                    <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block font-outfit">
+                      Cited Evidence Assets:
+                    </span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {msg.cited_asset_ids.map((id) => {
+                        const ast = assets.find(a => a.id === id);
+                        if (!ast) return null;
+                        return (
+                          <div
+                            key={id}
+                            onClick={() => {
+                              onSelectAsset(ast);
+                              onClose();
+                            }}
+                            className="flex items-center gap-2 p-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 cursor-pointer transition-all text-[10px]"
+                          >
+                            <img 
+                              src={ast.thumbnail_url} 
+                              alt={ast.id}
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=300&q=80';
+                              }}
+                              className="w-7 h-7 rounded-lg object-cover" 
+                            />
+                            <div className="truncate">
+                              <span className="font-bold text-slate-900 block truncate">{ast.id}</span>
+                              <span className="text-emerald-700 font-bold font-mono text-[9px]">{ast.tier}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Shortcut Action Buttons */}
+                {msg.action_type === 'open_slider' && (
+                  <button
+                    onClick={() => {
+                      onNavigate('slider');
+                      onClose();
+                    }}
+                    className="w-full mt-1 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-extrabold text-[11px] border border-emerald-300 flex items-center justify-center gap-1 shadow-xs transition-colors"
+                  >
+                    <span>Open Before/After Slider &rarr;</span>
+                  </button>
+                )}
+
+                {msg.action_type === 'view_review' && (
+                  <button
+                    onClick={() => {
+                      onNavigate('review');
+                      onClose();
+                    }}
+                    className="w-full mt-1 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 font-extrabold text-[11px] border border-rose-300 flex items-center justify-center gap-1 shadow-xs transition-colors"
+                  >
+                    <span>Inspect Review Queue &rarr;</span>
+                  </button>
+                )}
+
+              </div>
+            </div>
+          ))}
+
+          {isThinking && (
+            <div className="flex items-center gap-2 text-xs text-slate-500 font-medium p-2">
+              <Sparkles className="w-4 h-4 text-emerald-600 animate-spin" />
+              <span>Copilot querying evidence graph...</span>
+            </div>
+          )}
+        </div>
+
+        {/* Input Box Footer */}
+        <div className="p-3 border-t border-slate-200 bg-white/90 backdrop-blur">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
+            }}
+            className="flex items-center gap-2"
+          >
+            <input
+              type="text"
+              value={inputQuery}
+              onChange={(e) => setInputQuery(e.target.value)}
+              placeholder="Ask a question about claims or evidence..."
+              className="flex-1 bg-slate-50 text-slate-900 placeholder-slate-400 px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 outline-none font-semibold"
+            />
+            <button
+              type="submit"
+              disabled={!inputQuery.trim()}
+              className="p-2.5 rounded-2xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-colors disabled:opacity-50 shadow-sm"
+            >
+              <Send className="w-4 h-4 text-white" />
+            </button>
+          </form>
+        </div>
+
       </div>
 
     </div>

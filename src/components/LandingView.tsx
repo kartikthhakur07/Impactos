@@ -773,61 +773,21 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
       </main>
 
-      {/* Skyline Silhouette Illustration Pinned to Bottom (Exact NEXUS Screenshot 2 Match) */}
-      <div className="w-full overflow-hidden border-t border-slate-200 bg-white/60 pt-4">
-        <svg 
-          viewBox="0 0 1200 120" 
-          className="w-full h-24 text-slate-800 fill-none stroke-current stroke-[1.5] opacity-80"
-          preserveAspectRatio="none"
-        >
-          {/* Bridge lines */}
-          <path d="M 0 90 L 50 40 L 100 90 M 50 40 L 50 90 M 20 65 L 80 65" />
-          <path d="M 100 90 H 200 L 220 50 L 240 90 M 220 50 L 220 90" />
-          
-          {/* Dome / Monument landmark line art */}
-          <path d="M 280 90 V 60 A 20 20 0 0 1 320 60 V 90 M 300 40 V 90" />
-          <path d="M 340 90 V 70 H 380 V 90 M 360 50 V 90" />
-          
-          {/* Tall skyscrapers line art */}
-          <path d="M 400 90 V 20 H 430 V 90 M 415 30 H 425 M 415 45 H 425 M 415 60 H 425 M 415 75 H 425" />
-          <path d="M 440 90 V 35 H 470 L 455 15 L 440 35 Z M 455 35 V 90" />
-          <path d="M 480 90 V 50 H 520 V 90 M 500 30 V 90" />
-          
-          {/* Temple / Gateway landmark */}
-          <path d="M 540 90 V 55 H 580 V 90 M 560 35 L 540 55 H 580 Z M 560 65 A 10 10 0 0 1 560 85" />
-          <path d="M 600 90 V 30 H 640 V 90 M 620 15 V 90" />
-
-          {/* Wind turbine / Solar tree line art */}
-          <path d="M 680 90 V 25 M 680 25 L 665 15 M 680 25 L 695 15 M 680 25 L 680 40" />
-          <path d="M 730 90 V 35 M 730 35 L 715 25 M 730 35 L 745 25 M 730 35 L 730 50" />
-
-          {/* City skyline repeat */}
-          <path d="M 770 90 V 45 H 810 V 90 M 790 30 V 90" />
-          <path d="M 830 90 V 20 H 870 V 90 M 850 10 V 90" />
-          <path d="M 890 90 V 60 H 940 V 90 M 915 45 V 90" />
-          
-          {/* Modern high rise */}
-          <path d="M 960 90 V 15 H 1000 V 90 M 980 5 V 90" />
-          <path d="M 1020 90 L 1050 40 L 1080 90 M 1050 40 V 90" />
-          <path d="M 1100 90 V 50 H 1200 V 90" />
-          
-          {/* Ground Line */}
-          <line x1="0" y1="90" x2="1200" y2="90" strokeWidth="2" />
-        </svg>
-
-        <footer className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 border-t border-slate-200/80">
-          <p className="font-semibold text-slate-700">
-            IMPACTOS v2.0 — Problem Statement 02 | Cloudinary Hackathon
+      {/* Footer Section */}
+      <footer className="w-full border-t border-slate-200 bg-white/80 backdrop-blur-md py-6 px-6 lg:px-12 text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 font-medium">
+          <p className="text-slate-700 font-bold">
+            IMPACTOS v2.0 • Problem Statement 02 | Cloudinary Hackathon
           </p>
-          <div className="flex items-center gap-4 text-slate-500">
+          <div className="flex items-center gap-4 text-slate-500 text-[11px]">
             <span>Verifiable Field Evidence</span>
             <span>•</span>
             <span>Anti-Spoofing</span>
             <span>•</span>
             <span>Cloudinary v2 Engine</span>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
 
     </div>
   );
