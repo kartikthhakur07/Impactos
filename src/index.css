@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #0f172a;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* Nexus Light Grid & Plus Intersections Pattern */
+.bg-nexus-light-grid {
+  background-color: #f4f5f7;
+  background-size: 32px 32px;
+  background-image: 
+    radial-gradient(circle, rgba(15, 23, 42, 0.12) 1px, transparent 1px),
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+.bg-nexus-dark-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.nexus-glass-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
+}
+
+.nexus-glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nexus-glass-hover:hover {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 12px 35px -5px rgba(16, 185, 129, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.nexus-gradient-text {
+  background: linear-gradient(135deg, #059669 0%, #0d9488 40%, #0284c7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Before/After Split Slider */
+.img-slider-container {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Tier Badge Colors - Bright Theme */
+.badge-t0 {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+.badge-t1 {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+.badge-t1plus {
+  background: #faf5ff;
+  color: #9333ea;
+  border: 1px solid #e9d5ff;
+}
+.badge-t2 {
+  background: #ecfeff;
+  color: #0891b2;
+  border: 1px solid #a5f3fc;
+}
+.badge-t3 {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+/* Leaflet Map Styling */
+.leaflet-container {
+  background-color: #f8fafc !important;
+  border-radius: 1rem;
+}
+
