@@ -1,6 +1,6 @@
 # 🛡️ IMPACTOS v2.0 — Verifiable Impact Evidence & Greenwashing Prevention Platform
 
-> **Problem Statement 02 | Cloudinary Hackathon**  
+> **Verifiable Impact Evidence & Anti-Greenwashing Engine**  
 > *"Others show impact. We prove it."*
 
 [![Cloudinary Engine](https://img.shields.io/badge/Cloudinary-v2_Verified_Pipeline-0070F3?style=for-the-badge&logo=cloudinary&logoColor=white)](https://cloudinary.com)
@@ -192,5 +192,4 @@ impactos/
 
 ## 📜 License & Citation
 
-Built for the **Cloudinary Hackathon — Problem Statement 02**.  
 Distributed under the MIT License.
