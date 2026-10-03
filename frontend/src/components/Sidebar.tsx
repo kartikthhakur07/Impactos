@@ -29,6 +29,19 @@ interface SidebarProps {
   setMobileOpen: (open: boolean) => void;
 }
 
+interface NavItem {
+  id: string;
+  label: string;
+  icon: any;
+  tag?: string;
+  badge?: number;
+}
+
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   setActiveTab,
@@ -39,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   mobileOpen,
   setMobileOpen
 }) => {
-  const navGroups = [
+  const navGroups: NavGroup[] = [
     {
       title: 'OVERVIEW',
       items: [

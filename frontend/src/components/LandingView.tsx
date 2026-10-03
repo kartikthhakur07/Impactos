@@ -29,7 +29,6 @@ import {
   AlertTriangle,
   Play
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface LandingViewProps {
   onLaunchApp: (tab?: string) => void;
@@ -103,9 +102,6 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
   const handleSeedAndLaunch = () => {
     onSeedDemoData();
-    try {
-      confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 } });
-    } catch (e) {}
     onLaunchApp('dashboard');
   };
 

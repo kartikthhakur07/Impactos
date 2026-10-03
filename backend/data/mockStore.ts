@@ -1,5 +1,13 @@
 // IMPACTOS Backend In-Memory Persistence & Seed Store
 
+export interface ImpactSite {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  radius_m: number;
+}
+
 export interface ImpactProject {
   id: string;
   name: string;
@@ -12,11 +20,13 @@ export interface ImpactProject {
   verifiedAssetsCount: number;
   trustScore: number;
   status: 'active' | 'auditing' | 'verified';
+  sites: ImpactSite[];
 }
 
 export interface MediaAsset {
   id: string;
   projectId: string;
+  siteId?: string;
   title: string;
   imageUrl: string;
   captureMethod: 'standard_upload' | 'trusted_web_capture' | 'native_app' | 'auditor_attested';
@@ -33,8 +43,12 @@ export interface MediaAsset {
 export interface AntiSpoofToken {
   token: string;
   projectId: string;
-  challengeCode: string;
+  siteId?: string;
+  nonce: string;
+  spotCode: string;
+  challengeCode?: string;
   expiresAt: string;
+  createdAt: number;
   used: boolean;
 }
 
@@ -50,7 +64,11 @@ export const MOCK_PROJECTS: ImpactProject[] = [
     totalAssetsCount: 14,
     verifiedAssetsCount: 12,
     trustScore: 92,
-    status: 'verified'
+    status: 'verified',
+    sites: [
+      { id: 'site-a', name: 'Site A - Cauvery Delta Plantation Zone', lat: 10.7867, lng: 79.1378, radius_m: 500 },
+      { id: 'site-a2', name: 'Site A2 - Northern Buffer Ridge', lat: 10.7920, lng: 79.1410, radius_m: 450 }
+    ]
   },
   {
     id: 'proj-2',
@@ -63,7 +81,10 @@ export const MOCK_PROJECTS: ImpactProject[] = [
     totalAssetsCount: 10,
     verifiedAssetsCount: 9,
     trustScore: 86,
-    status: 'active'
+    status: 'active',
+    sites: [
+      { id: 'site-d', name: 'Site D - Jaisalmer Village Grid Alpha', lat: 26.9157, lng: 70.9083, radius_m: 400 }
+    ]
   },
   {
     id: 'proj-3',
@@ -76,7 +97,10 @@ export const MOCK_PROJECTS: ImpactProject[] = [
     totalAssetsCount: 12,
     verifiedAssetsCount: 10,
     trustScore: 81,
-    status: 'auditing'
+    status: 'auditing',
+    sites: [
+      { id: 'site-b', name: 'Site B - Anantapur Rural Water Point', lat: 14.6819, lng: 77.6006, radius_m: 300 }
+    ]
   },
   {
     id: 'proj-4',
@@ -89,7 +113,10 @@ export const MOCK_PROJECTS: ImpactProject[] = [
     totalAssetsCount: 8,
     verifiedAssetsCount: 6,
     trustScore: 78,
-    status: 'active'
+    status: 'active',
+    sites: [
+      { id: 'site-c', name: 'Site C - Gosaba Estuary Mudflats', lat: 22.1652, lng: 88.8071, radius_m: 600 }
+    ]
   },
   {
     id: 'proj-5',
@@ -102,7 +129,10 @@ export const MOCK_PROJECTS: ImpactProject[] = [
     totalAssetsCount: 9,
     verifiedAssetsCount: 7,
     trustScore: 84,
-    status: 'verified'
+    status: 'verified',
+    sites: [
+      { id: 'site-e', name: 'Site E - Gokarna Estuary Trash Barrier', lat: 14.5479, lng: 74.3188, radius_m: 350 }
+    ]
   }
 ];
 
@@ -110,6 +140,7 @@ export const MOCK_ASSETS: MediaAsset[] = [
   {
     id: 'ast-101',
     projectId: 'proj-1',
+    siteId: 'site-a',
     title: 'Sundarbans Rhizophora Sapling Plot A',
     imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
     captureMethod: 'auditor_attested',
@@ -125,6 +156,7 @@ export const MOCK_ASSETS: MediaAsset[] = [
   {
     id: 'ast-102',
     projectId: 'proj-2',
+    siteId: 'site-d',
     title: 'Solar Inverter Bank Installation',
     imageUrl: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=800&q=80',
     captureMethod: 'trusted_web_capture',
@@ -140,6 +172,7 @@ export const MOCK_ASSETS: MediaAsset[] = [
   {
     id: 'ast-103',
     projectId: 'proj-3',
+    siteId: 'site-b',
     title: 'Check-Dam Water Retention Well',
     imageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?auto=format&fit=crop&w=800&q=80',
     captureMethod: 'standard_upload',

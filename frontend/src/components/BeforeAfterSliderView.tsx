@@ -110,6 +110,7 @@ export const BeforeAfterSliderView: React.FC<BeforeAfterSliderViewProps> = ({
           <img
             src={afterAsset.url}
             alt="After"
+            onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1000&q=80'; }}
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           />
 
@@ -131,6 +132,7 @@ export const BeforeAfterSliderView: React.FC<BeforeAfterSliderViewProps> = ({
             <img
               src={beforeAsset.url}
               alt="Before"
+              onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=80'; }}
               className="absolute inset-0 w-full h-full object-cover"
               style={{ width: '100%', height: '100%', maxWidth: 'none' }}
             />

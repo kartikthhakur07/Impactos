@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { executeAdversarialTrial, ClaimTrialRequest } from '../services/courtroomEngine';
-import { MOCK_ASSETS } from '../data/mockStore';
+import { MOCK_ASSETS, MediaAsset } from '../data/mockStore';
 
 const router = Router();
 
@@ -46,7 +46,7 @@ router.post('/trial', (req: Request, res: Response) => {
 
   // Create asset map
   const assetMap: Record<string, any> = {};
-  MOCK_ASSETS.forEach(a => {
+  MOCK_ASSETS.forEach((a: MediaAsset) => {
     assetMap[a.id] = a;
   });
 

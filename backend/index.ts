@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 
 import projectsRouter from './routes/projects';
 import assetsRouter from './routes/assets';
@@ -15,17 +16,60 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
-app.use(cors());
+app.use(cors() as any);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve local upload files statically
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
 // Health Check API
 app.get('/api/health', (req: Request, res: Response) => {
+  const isCloudinaryConfigured = Boolean(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
+  );
+
   res.json({
     status: 'healthy',
     service: 'IMPACTOS Evidence Verification Engine Backend',
     version: 'v2.0.0',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    cloudinaryConfigured: isCloudinaryConfigured,
+    storageMode: isCloudinaryConfigured ? 'cloudinary' : 'local',
+    dbMode: 'mock'
+  });
+});
+
+// System Capabilities API
+app.get('/api/capabilities', (req: Request, res: Response) => {
+  const hasVisionKey = Boolean(process.env.VISION_API_KEY || process.env.OPENAI_API_KEY);
+  const isCloudinaryConfigured = Boolean(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
+  );
+
+  res.json({
+    success: true,
+    capabilities: {
+      sha256: true,
+      phash: true,
+      exif: true,
+      geofence: true,
+      vision: hasVisionKey ? 'real' : 'mock',
+      storage: isCloudinaryConfigured ? 'cloudinary' : 'local',
+      maxSizeMB: 15,
+      allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'video/mp4'],
+      checks: [
+        { key: 'sha256', label: 'SHA-256 Checksum', status: 'active' },
+        { key: 'phash', label: '64-bit Perceptual Hash (pHash)', status: 'active' },
+        { key: 'exif', label: 'EXIF GPS & DateTimeOriginal', status: 'active' },
+        { key: 'geofence', label: 'Haversine Geofence Distance', status: 'active' },
+        { key: 'vision', label: hasVisionKey ? 'Vision AI Model (Live)' : 'Vision AI Analysis (Mock)', status: hasVisionKey ? 'real' : 'mock' }
+      ]
+    }
   });
 });
 
@@ -38,7 +82,7 @@ app.use('/api/capture', captureRouter);
 app.use('/api/cloudinary', cloudinaryRouter);
 
 // Global Error Handler
-app.use((err: any, req: Request, res: Response, next: any) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error('API Error:', err);
   res.status(500).json({
     success: false,

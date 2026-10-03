@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Asset } from '../types';
-import { 
-  Zap, 
-  ShieldCheck, 
-  AlertTriangle, 
-  CheckCircle2, 
-  UploadCloud, 
-  RefreshCw, 
+import {
+  Zap,
+  ShieldCheck,
+  AlertTriangle,
+  CheckCircle2,
+  UploadCloud,
+  RefreshCw,
   Sparkles,
   Lock
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface LiveChallengeViewProps {
   onAssetCreated: (asset: Asset) => void;
@@ -82,14 +81,11 @@ export const LiveChallengeView: React.FC<LiveChallengeViewProps> = ({
 
     setChallengeResult(res);
     setChallengeState('caught');
-    try {
-      confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-    } catch (e) {}
   };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      
+
       {/* Header */}
       <div className="glass-panel p-6 rounded-2xl border border-emerald-300 space-y-3 text-center md:text-left bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-800 text-white shadow-lg">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 border border-white/30 text-white text-xs font-extrabold backdrop-blur">
@@ -106,7 +102,7 @@ export const LiveChallengeView: React.FC<LiveChallengeViewProps> = ({
 
       {/* Challenge Action Buttons Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        
+
         <button
           disabled={challengeState === 'testing'}
           onClick={() => handleTestFakeUpload('ai_gen')}

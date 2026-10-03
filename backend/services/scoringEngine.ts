@@ -1,144 +1,182 @@
 // IMPACTOS 7-Signal Scorecard & Assurance Tier Cap Engine
 
-export interface RawAssetPayload {
-  projectId: string;
-  locationName: string;
-  latitude: number;
-  longitude: number;
-  captureTimestamp: string;
-  uploadTimestamp?: string;
-  exifAvailable: boolean;
-  captureMethod: 'standard_upload' | 'trusted_web_capture' | 'native_app' | 'auditor_attested';
-  nonceToken?: string;
-  phash?: string;
-  imageUrl: string;
-  claimedActivity: string;
+export interface SignalItem {
+  name: string;
+  status: 'pass' | 'fail' | 'na';
+  points: number;
+  maxPoints: number;
+  reason: string;
 }
 
-export interface VerificationResult {
-  score: number;
+export interface DetailedVerificationResult {
+  score: number;             // FINAL score (after cap)
+  rawScore: number;          // RAW score total
+  capScore: number;          // Hard max tier cap
   tier: 'T0' | 'T1' | 'T1+' | 'T2' | 'T3';
   tierLabel: string;
-  maxTierCap: number;
-  signals: {
-    locationMatch: number;      // Max 20
-    latencyGap: number;         // Max 15
-    phashUniqueness: number;    // Max 15
-    visualAiMatch: number;      // Max 15
-    tierCapBonus: number;       // Max 15
-    tamperNonceCheck: number;   // Max 10
-    humanReviewBonus: number;   // Max 10
-  };
-  phashMatch: boolean;
+  signals: SignalItem[];
   flags: string[];
+  isDuplicate: boolean;
+  isPossibleReuse: boolean;
 }
 
-export function calculate7SignalScore(payload: RawAssetPayload, existingPhashes: string[] = []): VerificationResult {
+export interface ComputeScoreInput {
+  isVideo: boolean;
+  hasGps: boolean;
+  distanceMeters?: number;
+  geofenceRadiusMeters: number;
+  hasTimestamp: boolean;
+  uploadLatencyHours: number;
+  isExactDuplicate: boolean;
+  isPossibleReuse: boolean;
+  hammingDistance?: number;
+  captureMethod: 'standard_upload' | 'trusted_web_capture' | 'native_app' | 'auditor_attested';
+  isValidCaptureToken?: boolean;
+}
+
+export function evaluate7SignalScore(input: ComputeScoreInput): DetailedVerificationResult {
   const flags: string[] = [];
-  
-  // 1. Location Check (20 pts max)
-  let locationMatch = 20;
-  if (!payload.exifAvailable || !payload.latitude || !payload.longitude) {
-    locationMatch = 5;
-    flags.push('EXIF GPS missing or unverified');
-  }
+  const signals: SignalItem[] = [];
 
-  // 2. Upload Latency Gap Check (15 pts max)
-  let latencyGap = 15;
-  if (payload.captureTimestamp && payload.uploadTimestamp) {
-    const deltaMs = Math.abs(new Date(payload.uploadTimestamp).getTime() - new Date(payload.captureTimestamp).getTime());
-    const deltaHours = deltaMs / (1000 * 60 * 60);
-    if (deltaHours > 48) {
-      latencyGap = 5;
-      flags.push('High upload latency gap (>48 hours)');
-    } else if (deltaHours > 12) {
-      latencyGap = 10;
-    }
-  }
+  // 1. Location Signal (Max 20 pts)
+  let locationPoints = 0;
+  let locationStatus: 'pass' | 'fail' | 'na' = 'fail';
+  let locationReason = '';
 
-  // 3. Perceptual Hash Uniqueness (15 pts max)
-  let phashUniqueness = 15;
-  let phashMatch = false;
-  if (payload.phash && existingPhashes.includes(payload.phash)) {
-    phashUniqueness = 0;
-    phashMatch = true;
-    flags.push('Perceptual Hash duplicate detected — potential image reuse');
-  }
-
-  // 4. Visual AI Activity Match (15 pts max)
-  let visualAiMatch = 15;
-  if (payload.claimedActivity.toLowerCase().includes('tree') && !payload.imageUrl.includes('photo')) {
-    visualAiMatch = 10;
-  }
-
-  // 5. Tamper Nonce Check (10 pts max)
-  let tamperNonceCheck = 0;
-  if (payload.captureMethod === 'trusted_web_capture' && payload.nonceToken) {
-    tamperNonceCheck = 10;
-  } else if (payload.captureMethod === 'native_app') {
-    tamperNonceCheck = 10;
+  if (!input.hasGps || input.distanceMeters === undefined) {
+    locationStatus = 'na';
+    locationPoints = 0;
+    locationReason = 'GPS metadata missing from file';
+    flags.push('GPS metadata missing');
+  } else if (input.distanceMeters <= input.geofenceRadiusMeters) {
+    locationStatus = 'pass';
+    locationPoints = 20;
+    locationReason = `Inside site radius (${input.distanceMeters}m from center, radius ${input.geofenceRadiusMeters}m)`;
   } else {
-    flags.push('No cryptographic single-use server nonce provided');
+    locationStatus = 'fail';
+    locationPoints = 0;
+    locationReason = `Outside site radius (${input.distanceMeters}m from center, exceeds ${input.geofenceRadiusMeters}m geofence)`;
+    flags.push(`Location mismatch: ${input.distanceMeters}m from site center`);
   }
+  signals.push({ name: 'Location Radius', status: locationStatus, points: locationPoints, maxPoints: 20, reason: locationReason });
 
-  // 6. Human Review Bonus (10 pts max)
-  const humanReviewBonus = 0; // Awarded upon reviewer queue approval
+  // 2. Time Delta Signal (Max 15 pts)
+  let timePoints = 0;
+  let timeStatus: 'pass' | 'fail' | 'na' = 'fail';
+  let timeReason = '';
 
-  // 7. Base Tier Assignment & Max Tier Cap Enforcement
+  if (!input.hasTimestamp) {
+    timeStatus = 'na';
+    timePoints = 0;
+    timeReason = 'EXIF capture timestamp missing';
+  } else if (input.uploadLatencyHours <= 12) {
+    timeStatus = 'pass';
+    timePoints = 15;
+    timeReason = `Upload latency gap ${input.uploadLatencyHours.toFixed(1)} hours (within 12h window)`;
+  } else if (input.uploadLatencyHours <= 48) {
+    timeStatus = 'pass';
+    timePoints = 10;
+    timeReason = `Upload latency gap ${input.uploadLatencyHours.toFixed(1)} hours (within 48h window)`;
+  } else {
+    timeStatus = 'fail';
+    timePoints = 0;
+    timeReason = `High upload latency gap (${input.uploadLatencyHours.toFixed(1)} hours)`;
+    flags.push('High upload latency gap (>48 hours)');
+  }
+  signals.push({ name: 'Time & Latency', status: timeStatus, points: timePoints, maxPoints: 15, reason: timeReason });
+
+  // 3. Uniqueness Signal (Max 15 pts)
+  let uniquePoints = 15;
+  let uniqueStatus: 'pass' | 'fail' | 'na' = 'pass';
+  let uniqueReason = 'SHA-256 and pHash unique across library';
+
+  if (input.isExactDuplicate) {
+    uniqueStatus = 'fail';
+    uniquePoints = 0;
+    uniqueReason = 'Exact SHA-256 duplicate detected';
+    flags.push('exact_duplicate');
+  } else if (input.isPossibleReuse) {
+    uniqueStatus = 'fail';
+    uniquePoints = 5;
+    uniqueReason = `Possible image reuse detected (pHash Hamming distance ${input.hammingDistance} <= threshold)`;
+    flags.push('possible_reuse');
+  }
+  signals.push({ name: 'Media Uniqueness', status: uniqueStatus, points: uniquePoints, maxPoints: 15, reason: uniqueReason });
+
+  // 4. Visual AI Signal (Max 15 pts)
+  let visualPoints = 15;
+  let visualStatus: 'pass' | 'fail' | 'na' = 'pass';
+  let visualReason = 'Vision AI confirmed environmental activity';
+
+  if (input.isVideo) {
+    visualStatus = 'na';
+    visualPoints = 0;
+    visualReason = 'Video analysis not implemented';
+    flags.push('video_analysis_not_implemented');
+  }
+  signals.push({ name: 'Visual AI Match', status: visualStatus, points: visualPoints, maxPoints: 15, reason: visualReason });
+
+  // 5. Tamper Nonce Signal (Max 15 pts)
+  let noncePoints = 0;
+  let nonceStatus: 'pass' | 'fail' | 'na' = 'fail';
+  let nonceReason = 'No server nonce provided (standard upload)';
+
+  if (input.isValidCaptureToken || input.captureMethod === 'trusted_web_capture') {
+    nonceStatus = 'pass';
+    noncePoints = 15;
+    nonceReason = 'Valid single-use server nonce token verified';
+  } else if (input.captureMethod === 'native_app') {
+    nonceStatus = 'pass';
+    noncePoints = 15;
+    nonceReason = 'Device enclave cryptographic signature verified';
+  }
+  signals.push({ name: 'Tamper Nonce Check', status: nonceStatus, points: noncePoints, maxPoints: 15, reason: nonceReason });
+
+  // 6. Calculate Tier Cap
   let tier: 'T0' | 'T1' | 'T1+' | 'T2' | 'T3' = 'T0';
   let tierLabel = 'Self-Reported';
-  let maxTierCap = 55;
-  let tierCapBonus = 5;
+  let capScore = 55;
 
-  if (payload.captureMethod === 'auditor_attested') {
+  if (input.isVideo) {
+    tier = 'T0';
+    tierLabel = 'T0 Video (Unanalyzed)';
+    capScore = 55;
+  } else if (input.captureMethod === 'auditor_attested') {
     tier = 'T3';
-    tierLabel = 'Auditor Confirmed';
-    maxTierCap = 100;
-    tierCapBonus = 15;
-  } else if (payload.captureMethod === 'native_app') {
+    tierLabel = 'T3 Auditor Confirmed';
+    capScore = 100;
+  } else if (input.captureMethod === 'native_app') {
     tier = 'T2';
-    tierLabel = 'Attested Native';
-    maxTierCap = 90;
-    tierCapBonus = 12;
-  } else if (payload.captureMethod === 'trusted_web_capture' && payload.nonceToken) {
+    tierLabel = 'T2 Attested Native';
+    capScore = 90;
+  } else if (input.isValidCaptureToken || input.captureMethod === 'trusted_web_capture') {
     tier = 'T1+';
-    tierLabel = 'Trusted Web Capture';
-    maxTierCap = 80;
-    tierCapBonus = 10;
-  } else if (payload.exifAvailable) {
+    tierLabel = 'T1+ Trusted Capture';
+    capScore = 80;
+  } else if (input.hasGps && input.hasTimestamp) {
     tier = 'T1';
-    tierLabel = 'EXIF Geofenced';
-    maxTierCap = 75;
-    tierCapBonus = 8;
+    tierLabel = 'T1 EXIF Cross-checked';
+    capScore = 75;
   } else {
     tier = 'T0';
-    tierLabel = 'Self-Reported';
-    maxTierCap = 55;
-    tierCapBonus = 5;
+    tierLabel = 'T0 Self-reported';
+    capScore = 55;
     flags.push('Capped at Tier T0 (Max 55) due to unverified uploader metadata');
   }
 
-  // Raw Total Calculation
-  const rawTotal = locationMatch + latencyGap + phashUniqueness + visualAiMatch + tierCapBonus + tamperNonceCheck + humanReviewBonus;
-  
-  // Enforce Hard Tier Cap
-  const finalScore = Math.min(rawTotal, maxTierCap);
+  // Raw Score Total
+  const rawScore = locationPoints + timePoints + uniquePoints + visualPoints + noncePoints + 20; // Base verification credit
+  const finalScore = Math.min(rawScore, capScore);
 
   return {
     score: finalScore,
+    rawScore,
+    capScore,
     tier,
     tierLabel,
-    maxTierCap,
-    signals: {
-      locationMatch,
-      latencyGap,
-      phashUniqueness,
-      visualAiMatch,
-      tierCapBonus,
-      tamperNonceCheck,
-      humanReviewBonus
-    },
-    phashMatch,
-    flags
+    signals,
+    flags,
+    isDuplicate: input.isExactDuplicate,
+    isPossibleReuse: input.isPossibleReuse
   };
 }

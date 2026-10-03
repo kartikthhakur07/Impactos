@@ -14,7 +14,7 @@ router.get('/', (req: Request, res: Response) => {
 
 // GET /api/projects/:id - Get project details by ID
 router.get('/:id', (req: Request, res: Response) => {
-  const project = MOCK_PROJECTS.find(p => p.id === req.params.id);
+  const project = MOCK_PROJECTS.find((p: ImpactProject) => p.id === req.params.id);
   if (!project) {
     return res.status(404).json({ success: false, error: 'Project not found' });
   }
@@ -40,7 +40,16 @@ router.post('/', (req: Request, res: Response) => {
     totalAssetsCount: 0,
     verifiedAssetsCount: 0,
     trustScore: 75,
-    status: 'active'
+    status: 'active',
+    sites: [
+      {
+        id: `site-${Date.now()}`,
+        name: `${name} Primary Site`,
+        lat: Number(latitude),
+        lng: Number(longitude),
+        radius_m: Number(geofenceRadiusMeters) || 5000
+      }
+    ]
   };
 
   MOCK_PROJECTS.unshift(newProject);

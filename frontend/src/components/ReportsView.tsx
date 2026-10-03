@@ -11,7 +11,6 @@ import {
   Award,
   Image as ImageIcon
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface ReportsViewProps {
   projects: Project[];
@@ -33,13 +32,6 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
     setIsExporting(true);
     setTimeout(() => {
       setIsExporting(false);
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      } catch (err) {}
     }, 1200);
   };
 

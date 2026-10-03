@@ -34,3 +34,6 @@ pnpm-debug.log*
 *.sw?
 .agents
 .gemini
+uploads
+backend/uploads
+

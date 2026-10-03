@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Asset, Project, Claim, ReportCard, ReviewItem } from './types';
-import { 
-  MOCK_PROJECTS, 
-  MOCK_ASSETS, 
-  MOCK_CLAIMS, 
-  MOCK_GREENWASHING_REPORT, 
-  MOCK_REVIEW_QUEUE 
+import {
+  MOCK_PROJECTS,
+  MOCK_ASSETS,
+  MOCK_CLAIMS,
+  MOCK_GREENWASHING_REPORT,
+  MOCK_REVIEW_QUEUE
 } from './data/mockData';
 
 // Component Imports
@@ -31,7 +31,6 @@ import { ImpactCopilotDrawer } from './components/ImpactCopilotDrawer';
 
 // Icons for Top Header Bar
 import { Menu, Sparkles, Layers, ShieldCheck, User, Database, ArrowLeft, Bell } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<string>('landing');
@@ -47,6 +46,32 @@ export function App() {
   const [isCloudinaryMapOpen, setIsCloudinaryMapOpen] = useState<boolean>(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
 
+  // Live Backend Health Status State
+  const [healthState, setHealthState] = useState<{
+    loading: boolean;
+    error: boolean;
+    cloudinaryConfigured?: boolean;
+    storageMode?: string;
+    dbMode?: string;
+  }>({ loading: true, error: false });
+
+  React.useEffect(() => {
+    fetch('http://localhost:5000/api/health')
+      .then(r => r.json())
+      .then(d => {
+        setHealthState({
+          loading: false,
+          error: false,
+          cloudinaryConfigured: d.cloudinaryConfigured,
+          storageMode: d.storageMode || 'local',
+          dbMode: d.dbMode || 'mock'
+        });
+      })
+      .catch(() => {
+        setHealthState({ loading: false, error: true });
+      });
+  }, []);
+
   // Seed / Reset Demo Data Function
   const handleSeedDemoData = () => {
     setProjects([...MOCK_PROJECTS]);
@@ -54,10 +79,6 @@ export function App() {
     setClaims([...MOCK_CLAIMS]);
     setReportCard({ ...MOCK_GREENWASHING_REPORT });
     setReviewQueue([...MOCK_REVIEW_QUEUE]);
-
-    try {
-      confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
-    } catch (e) {}
   };
 
   // Handle asset creation (from Upload or Trusted Capture)
@@ -139,7 +160,7 @@ export function App() {
   // IF INSIDE APP DASHBOARD: Render Full Sidebar + Dashboard Application Layout
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-emerald-500 selection:text-white flex">
-      
+
       {/* Left Sidebar */}
       <Sidebar
         activeTab={activeTab}
@@ -154,7 +175,7 @@ export function App() {
 
       {/* Main Content Area offset by Sidebar width on desktop */}
       <div className="flex-1 lg:pl-64 flex flex-col min-w-0 min-h-screen">
-        
+
         {/* Top Header Bar */}
         <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
@@ -172,8 +193,27 @@ export function App() {
               <h1 className="text-base font-extrabold text-slate-900 font-outfit">
                 {getPageTitle(activeTab)}
               </h1>
-              <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
-                Organization: <span className="text-slate-800 font-bold">EcoTrust Global</span> • System: <span className="text-emerald-700 font-bold">Cloudinary v2 Verified</span>
+              <p className="text-[11px] text-slate-500 font-medium hidden sm:flex items-center gap-1.5 flex-wrap">
+                <span>Organization: <strong className="text-slate-800 font-bold">EcoTrust Global</strong></span>
+                <span>•</span>
+                <span>Cloudinary:</span>
+                {healthState.loading ? (
+                  <span className="text-slate-400 font-medium italic">Checking...</span>
+                ) : healthState.error ? (
+                  <span className="text-rose-700 font-bold px-1.5 py-0.5 rounded bg-rose-50 border border-rose-200 text-[10px]">
+                    Offline / Error
+                  </span>
+                ) : healthState.cloudinaryConfigured ? (
+                  <span className="text-emerald-700 font-bold px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-[10px]">
+                    Connected
+                  </span>
+                ) : (
+                  <span className="text-amber-800 font-bold px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-[10px]">
+                    Not Configured (Local Mode)
+                  </span>
+                )}
+                <span>•</span>
+                <span>DB: <strong className="text-slate-700 font-bold">{healthState.dbMode === 'mock' ? 'Mock Store' : 'Connected'}</strong></span>
               </p>
             </div>
           </div>
