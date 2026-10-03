@@ -131,24 +131,28 @@ For public transparency dashboards and donor reports, IMPACTOS applies dynamic C
 - Node.js 18+
 - npm or pnpm
 
-### Installation
+### Installation & Execution
 ```bash
 # 1. Clone the repository
 git clone https://github.com/kartikthhakur07/Impactos.git
 cd Impactos
 
-# 2. Install dependencies
-npm install
+# 2. Start Frontend Dev Server (React 19 + Vite)
+npm run dev:frontend
+# Launches on http://localhost:5173/
 
-# 3. Start local development server
-npm run dev
+# 3. Start Backend Express Server (Node.js + TS)
+npm run dev:backend
+# Launches on http://localhost:5000/
 ```
 
-The application will launch on `http://localhost:5173/`.
-
-### TypeScript Type Check
+### TypeScript Type Checks
 ```bash
-npx tsc --noEmit
+# Frontend type check
+npm run build:frontend
+
+# Backend type check
+npm run build:backend
 ```
 
 ---
@@ -157,34 +161,24 @@ npx tsc --noEmit
 
 ```
 impactos/
-├── src/
-│   ├── components/
-│   │   ├── LandingView.tsx                 # Full-screen NEXUS light map grid landing page
-│   │   ├── Dashboard.tsx                   # Executive verification metrics & active project cards
-│   │   ├── ProjectsView.tsx                # Leaflet map geofencing & site timeline
-│   │   ├── UploadView.tsx                  # Cloudinary signed upload ingestion pipeline
-│   │   ├── CaptureLinkView.tsx             # T1+ Trusted web capture simulation page
-│   │   ├── MediaExplorerView.tsx           # Semantic search & 7-signal asset inspector modal
-│   │   ├── BeforeAfterSliderView.tsx       # Interactive split change slider & Vision LLM summary
-│   │   ├── ClaimsTrialView.tsx             # Adversarial AI Courtroom (Prosecutor vs Defender vs Judge)
-│   │   ├── ReviewerQueueView.tsx           # Risk-ordered review queue (Human-in-the-loop)
-│   │   ├── GreenwashingReportCardView.tsx  # PDF CSR audit & A-E report card generator
-│   │   ├── ReportsView.tsx                 # Verified PDF export, social carousel & timelapse generator
-│   │   ├── LiveChallengeView.tsx           # "Fool Me If You Can" anti-spoofing challenge sandbox
-│   │   ├── PublicVerifiedView.tsx          # Read-only public view with e_blur_faces privacy shield
-│   │   ├── Sidebar.tsx                     # Sleek left navigation sidebar
-│   │   ├── AssetDetailModal.tsx            # 7-signal breakdown modal with onError fallbacks
-│   │   ├── CloudinaryMapModal.tsx          # Cloudinary architecture & feature mapping modal
-│   │   └── ImpactCopilotDrawer.tsx         # Floating Copilot AI assistant modal with backdrop blur
-│   ├── data/
-│   │   └── mockData.ts                     # 5 seeded impact projects & 30+ real high-res field assets
-│   ├── types/
-│   │   └── index.ts                        # TypeScript interfaces for Asset, Claim, Project, ReportCard
-│   ├── App.tsx                             # Main router & top header bar
-│   ├── index.css                           # Tailwind CSS v4 & light grid design system
-│   └── main.tsx                            # React DOM entry point
-├── package.json
-├── vite.config.ts
+├── frontend/                               # React 19 + TypeScript + Vite 5 Frontend Application
+│   ├── src/
+│   │   ├── components/                     # Component modules (LandingView, Dashboard, ProjectsView, etc.)
+│   │   ├── data/                           # 5 Seeded projects & 30+ real Unsplash field assets
+│   │   ├── types/                          # TypeScript interface contracts
+│   │   ├── App.tsx                         # Primary router & decluttered header navigation
+│   │   └── main.tsx                        # DOM mount entry point
+│   ├── public/                             # Public static assets
+│   ├── package.json                        # Frontend dependencies (React, Leaflet, Recharts, Tailwind v4)
+│   └── vite.config.ts                      # Vite build configuration
+├── backend/                                # Node.js + Express + TypeScript Backend Server (Port 5000)
+│   ├── routes/                             # API Routers (projects, assets, claims, reports, capture, cloudinary)
+│   ├── services/                           # Business logic (7-Signal engine, AI Courtroom, CSR audit)
+│   ├── data/                               # In-memory mock database & persistence
+│   ├── index.ts                            # Express application entry point
+│   ├── package.json                        # Backend dependencies (Express, CORS, dotenv, tsx)
+│   └── tsconfig.json                       # Backend TypeScript configuration
+├── package.json                            # Workspace root script runner
 └── README.md
 ```
 
